@@ -670,9 +670,9 @@
                                 break;
                         }
 
-                        FreeRTOS_printf( ( "      %2u: %s\n",
+                        /*FreeRTOS_printf( ( "      %2u: %s\n",
                                            ( unsigned ) xSubEntry,
-                                           pcAddress ) );
+                                           pcAddress ) );*/
                     }
                 }
             }

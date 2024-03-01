@@ -410,7 +410,7 @@
                         {
                             /* _HT_ just while testing. When the program gets here,
                              * pucUDPPayloadBuffer was invalid. */
-                            FreeRTOS_printf( ( "DNS_ParseDNSReply: pucUDPPayloadBuffer was invalid\n" ) );
+                            /*FreeRTOS_printf( ( "DNS_ParseDNSReply: pucUDPPayloadBuffer was invalid\n" ) );*/
                             break;
                         }
 
@@ -809,9 +809,9 @@
                 }
                 else
                 {
-                    FreeRTOS_printf( ( "DNS sanity check failed: %u != %u\n",
+                    /*FreeRTOS_printf( ( "DNS sanity check failed: %u != %u\n",
                                        FreeRTOS_ntohs( pxDNSAnswerRecord->usDataLength ),
-                                       ( unsigned ) pxSet->uxAddressLength ) );
+                                       ( unsigned ) pxSet->uxAddressLength ) );*/
                 }
 
                 pxSet->pucByte = &( pxSet->pucByte[ sizeof( DNSAnswerRecord_t ) + pxSet->uxAddressLength ] );

@@ -22,9 +22,10 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "FreeRTOSConfig.h"
+#include "FreeRTOSIPConfig.h"
+
 #include "FreeRTOS.h"
 #include "task.h"
-#include "FreeRTOSIPConfig.h"
 #include "FreeRTOS_sockets.h"
 #include "FreeRTOS_IP.h"
 /* USER CODE END Includes */
