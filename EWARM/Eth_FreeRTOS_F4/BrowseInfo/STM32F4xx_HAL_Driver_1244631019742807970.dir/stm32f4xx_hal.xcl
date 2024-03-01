@@ -27,6 +27,14 @@ C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\FreeRTOS\portable
 -I
 C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\FreeRTOS\portable\MemMang
 -I
+C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\FreeRTOSplus\include
+-I
+C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\FreeRTOSplus\portable\BufferManagement
+-I
+C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\FreeRTOSplus\portable\Compiler\IAR
+-I
+C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\FreeRTOSplus\portable\NetworkInterface
+-I
 C:\Program Files\IAR Systems\Embedded Workbench 9.2\arm\inc\c\aarch32
 -I
 C:\Program Files\IAR Systems\Embedded Workbench 9.2\arm\inc
@@ -48,6 +56,14 @@ C:\Projects\IAR\Eth_FreeRTOS_F4\ThirdParty\FreeRTOS\include
 C:\Projects\IAR\Eth_FreeRTOS_F4\ThirdParty\FreeRTOS\portable
 -I
 C:\Projects\IAR\Eth_FreeRTOS_F4\ThirdParty\FreeRTOS\portable\MemMang
+-I
+C:\Projects\IAR\Eth_FreeRTOS_F4\ThirdParty\FreeRTOSplus\include
+-I
+C:\Projects\IAR\Eth_FreeRTOS_F4\ThirdParty\FreeRTOSplus\portable\BufferManagement
+-I
+C:\Projects\IAR\Eth_FreeRTOS_F4\ThirdParty\FreeRTOSplus\portable\Compiler\IAR
+-I
+C:\Projects\IAR\Eth_FreeRTOS_F4\ThirdParty\FreeRTOSplus\portable\NetworkInterface
 -D__CHAR_BITS__=8
 -D__CHAR_MAX__=0xff
 -D__CHAR_MIN__=0

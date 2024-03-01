@@ -36,7 +36,7 @@
 /* Scheduler includes. */
 #include "FreeRTOS.h"
 #include "task.h"
-
+#include "port_proto.h"
 #ifndef __ARMVFP__
     #error This port can only be used when the project options are configured to enable hardware floating point support.
 #endif
@@ -138,12 +138,12 @@ void xPortSysTickHandler( void );
 /*
  * Start first task is a separate function so it can be tested in isolation.
  */
-extern "C"  void vPortStartFirstTask( void );
+//extern "C"  void vPortStartFirstTask( void );
 
 /*
  * Turn the VFP on.
  */
-extern "C"  void vPortEnableVFP( void );
+//extern "C"  void vPortEnableVFP( void );
 
 /*
  * Used to catch tasks that attempt to return from their implementing function.

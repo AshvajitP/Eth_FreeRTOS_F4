@@ -24,6 +24,9 @@
 #include "FreeRTOSConfig.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "FreeRTOSIPConfig.h"
+#include "FreeRTOS_sockets.h"
+#include "FreeRTOS_IP.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -42,6 +45,8 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+RNG_HandleTypeDef hrng;
+
 TIM_HandleTypeDef htim9;
 
 /* USER CODE BEGIN PV */
@@ -53,14 +58,31 @@ TaskHandle_t LedTask_t,SecondaryTask_t;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_TIM9_Init(void);
+static void MX_RNG_Init(void);
 /* USER CODE BEGIN PFP */
+
 void Led_task(void* arg);
 void SecTask(void* arg);
+extern NetworkInterface_t * px_FillInterfaceDescriptor( BaseType_t xEMACIndex,
+                                                    NetworkInterface_t * pxInterface );
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+/* The MAC address array is not declared const as the MAC address will
+normally be read from an EEPROM and not hard coded (in real deployed
+applications).*/
+static uint8_t ucMACAddress[ 6 ] = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55 };
 
+/* Define the network addressing.  These parameters will be used if either
+ipconfigUDE_DHCP is 0 or if ipconfigUSE_DHCP is 1 but DHCP auto configuration
+failed. */
+static const uint8_t ucIPAddress[ 4 ] = { 10, 25, 10, 200 };
+static const uint8_t ucNetMask[ 4 ] = { 255, 255, 255, 0 };
+static const uint8_t ucGatewayAddress[ 4 ] = { 10, 25, 10, 1 };
+
+/* The following is the address of an OpenDNS server. */
+static const uint8_t ucDNSServerAddress[ 4 ] = { 8, 8, 8, 8 };
 /* USER CODE END 0 */
 
 /**
@@ -92,6 +114,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_TIM9_Init();
+  MX_RNG_Init();
   /* USER CODE BEGIN 2 */
   // Enable 3V3_SW supply
   HAL_GPIO_WritePin(EN_3V3_SW_GPIO_Port, EN_3V3_SW_Pin, GPIO_PIN_SET);
@@ -99,10 +122,21 @@ int main(void)
   // Disable WDT. Needs more work!
   HAL_GPIO_WritePin(WDT_EN_GPIO_Port, WDT_EN_Pin, GPIO_PIN_RESET);
 //  HAL_GPIO_WritePin(WDT_IP_GPIO_Port, WDT_IP_Pin, GPIO_PIN_SET);
+  BaseType_t xRet;
+BaseType_t xEndPointCount = 0;
+static NetworkInterface_t xInterfaces[1];
+static NetworkEndPoint_t xEndPoints[4];
+
  // Set sounder to 0 volume level
  // HAL_GPIO_WritePin(SOUNDER_SEL1_GPIO_Port, SOUNDER_SEL1_Pin, GPIO_PIN_RESET);
  // HAL_GPIO_WritePin(SOUNDER_SEL2_GPIO_Port, SOUNDER_SEL2_Pin, GPIO_PIN_RESET);
-xTaskCreate(Led_task,"LED toggle",256,NULL,3,&LedTask_t);
+  xTaskCreate(Led_task,"LED toggle",256,NULL,3,&LedTask_t);
+  /* Initialise the TCP/IP stack. */
+  FreeRTOS_IPInit( ucIPAddress,
+                     ucNetMask,
+                     ucGatewayAddress,
+                     ucDNSServerAddress,
+                     ucMACAddress );
  xTaskCreate(SecTask,"Second Task",256,NULL,3,&SecondaryTask_t);
 
 vTaskStartScheduler();  
@@ -163,6 +197,32 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief RNG Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_RNG_Init(void)
+{
+
+  /* USER CODE BEGIN RNG_Init 0 */
+
+  /* USER CODE END RNG_Init 0 */
+
+  /* USER CODE BEGIN RNG_Init 1 */
+
+  /* USER CODE END RNG_Init 1 */
+  hrng.Instance = RNG;
+  if (HAL_RNG_Init(&hrng) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN RNG_Init 2 */
+
+  /* USER CODE END RNG_Init 2 */
+
 }
 
 /**
@@ -335,6 +395,99 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+ void vApplicationIPNetworkEventHook( eIPCallbackEvent_t eNetworkEvent )
+{
+    uint32_t ulIPAddress, ulNetMask, ulGatewayAddress, ulDNSServerAddress;
+    char cBuffer[ 16 ];
+    static BaseType_t xTasksAlreadyCreated = pdFALSE;
+
+    /* If the network has just come up...*/
+    if( eNetworkEvent == eNetworkUp )
+    {
+        /* Create the tasks that use the IP stack if they have not already been
+         * created. */
+        if( xTasksAlreadyCreated == pdFALSE )
+        {
+            /* See the comments above the definitions of these pre-processor
+             * macros at the top of this file for a description of the individual
+             * demo tasks. */
+            #if ( mainCREATE_SIMPLE_UDP_CLIENT_SERVER_TASKS == 1 )
+            {
+                vStartSimpleUDPClientServerTasks( configMINIMAL_STACK_SIZE, mainSIMPLE_UDP_CLIENT_SERVER_PORT, mainSIMPLE_UDP_CLIENT_SERVER_TASK_PRIORITY );
+            }
+            #endif /* mainCREATE_SIMPLE_UDP_CLIENT_SERVER_TASKS */
+
+            #if ( mainCREATE_TCP_ECHO_TASKS_SINGLE == 1 )
+            {
+                vStartTCPEchoClientTasks_SingleTasks( mainECHO_CLIENT_TASK_STACK_SIZE, mainECHO_CLIENT_TASK_PRIORITY );
+            }
+            #endif /* mainCREATE_TCP_ECHO_TASKS_SINGLE */
+
+            #if ( mainCREATE_TCP_ECHO_SERVER_TASK == 1 )
+            {
+                vStartSimpleTCPServerTasks( mainECHO_SERVER_TASK_STACK_SIZE, mainECHO_SERVER_TASK_PRIORITY );
+            }
+            #endif
+
+            xTasksAlreadyCreated = pdTRUE;
+        }
+
+        /* Print out the network configuration, which may have come from a DHCP
+         * server. */
+
+        /* Using ipconfigIPv4_BACKWARD_COMPATIBLE as the substitute of the
+         * downward compatibility*/
+
+        #if defined( ipconfigIPv4_BACKWARD_COMPATIBLE ) && ( ipconfigIPv4_BACKWARD_COMPATIBLE == 0 )
+            FreeRTOS_GetEndPointConfiguration( &ulIPAddress, &ulNetMask, &ulGatewayAddress, &ulDNSServerAddress, pxNetworkEndPoints );
+        #else
+            FreeRTOS_GetAddressConfiguration( &ulIPAddress, &ulNetMask, &ulGatewayAddress, &ulDNSServerAddress );
+        #endif /* defined( ipconfigIPv4_BACKWARD_COMPATIBLE ) && ( ipconfigIPv4_BACKWARD_COMPATIBLE == 0 ) */
+        FreeRTOS_inet_ntoa( ulIPAddress, cBuffer );
+       // FreeRTOS_printf( ( "\r\n\r\nIP Address: %s\r\n", cBuffer ) );
+
+        FreeRTOS_inet_ntoa( ulNetMask, cBuffer );
+       // FreeRTOS_printf( ( "Subnet Mask: %s\r\n", cBuffer ) );
+
+        FreeRTOS_inet_ntoa( ulGatewayAddress, cBuffer );
+        //FreeRTOS_printf( ( "Gateway Address: %s\r\n", cBuffer ) );
+
+        FreeRTOS_inet_ntoa( ulDNSServerAddress, cBuffer );
+       // FreeRTOS_printf( ( "DNS Server Address: %s\r\n\r\n\r\n", cBuffer ) );
+    }
+}
+
+   BaseType_t xApplicationGetRandomNumber( uint32_t *pulValue )
+    {
+    HAL_StatusTypeDef xResult;
+    BaseType_t xReturn;
+    uint32_t ulValue;
+
+    	xResult = HAL_RNG_GenerateRandomNumber( &hrng, &ulValue );
+    	if( xResult == HAL_OK )
+    	{
+    		xReturn = pdPASS;
+    		*pulValue = ulValue;
+    	}
+    	else
+    	{
+    		xReturn = pdFAIL;
+    	}
+    	return xReturn;
+    }
+
+    uint32_t ulApplicationGetNextSequenceNumber(
+        uint32_t ulSourceAddress,
+        uint16_t usSourcePort,
+        uint32_t ulDestinationAddress,
+        uint16_t usDestinationPort )
+    {
+    	uint32_t ulReturn;
+    	xApplicationGetRandomNumber( &( ulReturn ) );
+    	return ulReturn;
+    }
+
+
 void Led_task(void* arg)
 {
   while(1)
@@ -348,7 +501,7 @@ void SecTask(void* arg)
 {
  while(1)
   {
-    HAL_GPIO_TogglePin(GPIOE,LED_GAS_GRN_Pin);
+    HAL_GPIO_TogglePin(GPIOE,LED_FAULT_RED_Pin);
     vTaskDelay(1200);
   }
 } 

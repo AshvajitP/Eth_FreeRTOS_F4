@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<BuildDb />
+<BuildDb>
+    <Tool>
+        <Name>linker</Name>
+        <Parent>
+            <Path>C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\Eth_FreeRTOS_F4\Exe\Eth_FreeRTOS_F4.out</Path>
+            <Output>
+                <Path>C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\Eth_FreeRTOS_F4\List\Eth_FreeRTOS_F4.map</Path>
+            </Output>
+        </Parent>
+    </Tool>
+</BuildDb>

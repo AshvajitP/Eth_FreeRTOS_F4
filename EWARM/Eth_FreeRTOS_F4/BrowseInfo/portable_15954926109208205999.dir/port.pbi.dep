@@ -19,4 +19,5 @@ C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\Eth_FreeRTOS_F4\BrowseInfo\portable_159549
   C:\Projects\IAR\Eth_FreeRTOS_F4\ThirdParty\FreeRTOS\portable\portmacro.h \
   C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\FreeRTOS\include\mpu_wrappers.h \
   C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\FreeRTOS\include\task.h \
-  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\FreeRTOS\include\list.h
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\FreeRTOS\include\list.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\ThirdParty\FreeRTOS\portable\port_proto.h
