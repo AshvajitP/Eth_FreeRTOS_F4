@@ -1,0 +1,38 @@
+C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\Eth_FreeRTOS_F4\BrowseInfo\MbedTLS_13488266010948725562.dir\mbedtls_freertos_port.pbi: \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\ThirdParty\mbedtls-master\mbedtls_freertos_port.c \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\string.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\ycheck.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\yvals.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\DLib_Defaults.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\DLib_Config_Full.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\DLib_Product.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\ysizet.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\DLib_Product_string.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\FreeRTOS\include\FreeRTOS.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\stddef.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\stdint.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\Core\Inc\FreeRTOSConfig.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\FreeRTOS\include\projdefs.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\FreeRTOS\include\portable.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\FreeRTOS\include\deprecated_definitions.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\FreeRTOS\portable\portmacro.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\aarch32\intrinsics.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\aarch32\iccarm_builtin.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\aarch32\iar_intrinsics_common.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\FreeRTOS\include\mpu_wrappers.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\FreeRTOS\include\semphr.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\FreeRTOS\include\queue.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\FreeRTOS\include\task.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\FreeRTOS\include\list.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\mbedtls-master\include\mbedtls\entropy.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\mbedtls-master\include\mbedtls\private_access.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\mbedtls-master\include\mbedtls\build_info.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\mbedtls-master\include\mbedtls\mbedtls_config.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\mbedtls-master\include\mbedtls\check_config.h \
+  C:\Program\ Files\IAR\ Systems\Embedded\ Workbench\ 9.2\arm\inc\c\limits.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\mbedtls-master\include\mbedtls\config_adjust_legacy_crypto.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\mbedtls-master\include\mbedtls\config_adjust_x509.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\mbedtls-master\include\mbedtls\config_adjust_ssl.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\mbedtls-master\include\mbedtls\md.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\EWARM\..\ThirdParty\mbedtls-master\include\mbedtls\platform_util.h \
+  C:\Projects\IAR\Eth_FreeRTOS_F4\ThirdParty\mbedtls-master\mbedtls_freertos_port.h

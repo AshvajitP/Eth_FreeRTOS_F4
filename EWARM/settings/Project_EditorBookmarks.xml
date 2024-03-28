@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<userBookmarks />
+<userBookmarks>
+    <bookmark>
+        <path>C:\Projects\IAR\Eth_FreeRTOS_F4\ThirdParty\mbedtls\library\ssl_tls.c</path>
+        <row>3887</row>
+    </bookmark>
+</userBookmarks>

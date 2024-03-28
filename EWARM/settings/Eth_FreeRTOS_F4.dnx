@@ -21,27 +21,27 @@
         <ByteLimit>50</ByteLimit>
     </Stack>
     <PlDriver>
-        <MemConfigValue>C:\Program Files\IAR Systems\Embedded Workbench 9.2\arm\config\debugger\ST\STM32F407ZG.ddf</MemConfigValue>
         <FirstRun>0</FirstRun>
+        <MemConfigValue>C:\Program Files\IAR Systems\Embedded Workbench 9.2\arm\config\debugger\ST\STM32F407ZG.ddf</MemConfigValue>
     </PlDriver>
     <StLinkDriver>
+        <stlinkserialNo>35FF7106304E4B3035172443</stlinkserialNo>
+        <stlinkfoundProbes />
         <LeaveTargetRunning>_ 0</LeaveTargetRunning>
         <CStepIntDis>_ 0</CStepIntDis>
         <stlinkResetStyle>0</stlinkResetStyle>
         <stlinkResetStrategy>2</stlinkResetStrategy>
-        <stlinkserialNo>35FF7106304E4B3035172443</stlinkserialNo>
-        <stlinkfoundProbes />
     </StLinkDriver>
     <ArmDriver>
         <EnableCache>0</EnableCache>
         <EnforceMemoryConfiguration>1</EnforceMemoryConfiguration>
     </ArmDriver>
     <DebugChecksum>
-        <Checksum>155657478</Checksum>
+        <Checksum>996005951</Checksum>
     </DebugChecksum>
     <Exceptions>
-        <StopOnThrow>_ 0</StopOnThrow>
         <StopOnUncaught>_ 0</StopOnUncaught>
+        <StopOnThrow>_ 0</StopOnThrow>
     </Exceptions>
     <Disassembly>
         <MixedMode>1</MixedMode>
@@ -72,6 +72,19 @@
         <ITMportsLogFile>0</ITMportsLogFile>
         <ITMlogFile>$PROJ_DIR$\ITM.log</ITMlogFile>
     </SWOTraceHWSettings>
+    <struct_types>
+        <Fmt0>IP_Address_t-ulIP_IPv4	4	0</Fmt0>
+    </struct_types>
+    <array_types>
+        <Fmt0>char[16]	3	0</Fmt0>
+        <Fmt1>uint32_t[4]	4	0</Fmt1>
+        <Fmt2>uint8_t (const)[4]	3	0</Fmt2>
+        <Fmt3>uint8_t[4]	3	0</Fmt3>
+    </array_types>
+    <watch_formats>
+        <Fmt0>{W}1:mbedtlsError	3	0</Fmt0>
+        <Fmt1>{W}42:ulIPAddress	4	0</Fmt1>
+    </watch_formats>
     <Trace2>
         <Enabled>0</Enabled>
         <ShowSource>0</ShowSource>
@@ -125,7 +138,14 @@
         <mode>0</mode>
     </DisassembleMode>
     <Breakpoints2>
-        <Count>0</Count>
+        <Bp0>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\ThirdParty\mbedtls-master\library\ctr_drbg.c}.458.9" 0 0 1 "" 0 "" 0</Bp0>
+        <Bp1>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\ThirdParty\mbedtls-master\library\ctr_drbg.c}.340.9" 0 0 1 "" 0 "" 0</Bp1>
+        <Bp2>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\ThirdParty\mbedtls-master\library\ctr_drbg.c}.353.9" 0 0 1 "" 0 "" 0</Bp2>
+        <Bp3>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\ThirdParty\mbedtls\library\ssl_msg.c}.5054.9" 0 0 1 "" 0 "" 0</Bp3>
+        <Bp4>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\ThirdParty\mbedtls\library\ssl_msg.c}.5050.13" 0 0 1 "" 0 "" 0</Bp4>
+        <Bp5>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\ThirdParty\FreeRTOSplus\network_transport\transport_mbedtls.c}.805.5" 0 0 1 "" 0 "" 0</Bp5>
+        <Bp6>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\ThirdParty\FreeRTOSplus\network_transport\transport_mbedtls.c}.634.5" 0 0 1 "" 0 "" 0</Bp6>
+        <Count>7</Count>
     </Breakpoints2>
     <Aliases>
         <Count>0</Count>

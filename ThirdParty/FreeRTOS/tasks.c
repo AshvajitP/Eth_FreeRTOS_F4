@@ -1721,7 +1721,7 @@ static void prvAddNewTaskToReadyList( TCB_t * pxNewTCB ) PRIVILEGED_FUNCTION;
                             UBaseType_t uxPriority,
                             TaskHandle_t * const pxCreatedTask )
     {
-        TCB_t * pxNewTCB;
+        TCB_t * pxNewTCB = NULL;
         BaseType_t xReturn;
 
         traceENTER_xTaskCreate( pxTaskCode, pcName, uxStackDepth, pvParameters, uxPriority, pxCreatedTask );

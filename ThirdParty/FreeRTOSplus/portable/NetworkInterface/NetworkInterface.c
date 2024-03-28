@@ -604,12 +604,13 @@ BaseType_t xSTM32F_NetworkInterfaceInitialise( NetworkInterface_t * pxInterface 
 
             /* Force a negotiation with the Switch or Router and wait for LS. */
             prvEthernetUpdateConfig( pdTRUE );
-
+            
+             // traceENTER_uxTaskGetStackHighWaterMark(
             /* The deferred interrupt handler task is created at the highest
              * possible priority to ensure the interrupt handler can return directly
              * to it.  The task's handle is stored in xEMACTaskHandle so interrupts can
              * notify the task when there is something to process. */
-            if( xTaskCreate( prvEMACHandlerTask, "EMAC", configEMAC_TASK_STACK_SIZE, NULL, niEMAC_HANDLER_TASK_PRIORITY, &xEMACTaskHandle ) == pdPASS )
+            if(xTaskCreate( prvEMACHandlerTask, "EMAC", configEMAC_TASK_STACK_SIZE, NULL, niEMAC_HANDLER_TASK_PRIORITY, &xEMACTaskHandle ) == pdPASS )
             {
                 /* The xTXDescriptorSemaphore and the task are created successfully. */
                 xMacInitStatus = eMACPass;
@@ -1287,9 +1288,9 @@ void vMACBProbePhy( void )
 
 static void prvEthernetUpdateConfig( BaseType_t xForce )
 {
-    FreeRTOS_printf( ( "prvEthernetUpdateConfig: LS mask %02lX Force %d\n",
+   /* FreeRTOS_printf( ( "prvEthernetUpdateConfig: LS mask %02lX Force %d\n",
                        xPhyObject.ulLinkStatusMask,
-                       ( int ) xForce ) );
+                       ( int ) xForce ) );*/
 
     if( ( xForce != pdFALSE ) || ( xPhyObject.ulLinkStatusMask != 0 ) )
     {

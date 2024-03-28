@@ -76,7 +76,7 @@ through the FreeRTOS_gethostbyname() API function. */
 #define ipconfigUSE_DNS							1
 
 #define ipconfigUSE_DNS_CACHE					( 1 )
-#define ipconfigDNS_CACHE_NAME_LENGTH			( 65U )
+#define ipconfigDNS_CACHE_NAME_LENGTH			( 120U )
 #define ipconfigDNS_CACHE_ENTRIES				( 12U )
 #define ipconfigDNS_REQUEST_ATTEMPTS		2 // ( 3 )
 #if( ipconfigUSE_DNS_CACHE != 0 )
@@ -92,7 +92,7 @@ through the FreeRTOS_gethostbyname() API function. */
 #define	ipconfigDNS_RECEIVE_BLOCK_TIME_TICKS	pdMS_TO_TICKS( 2500U )
 #define	ipconfigDNS_SEND_BLOCK_TIME_TICKS		pdMS_TO_TICKS( 2500U )
 
-#define ipconfigUSE_LINKED_RX_MESSAGES		1
+#define ipconfigUSE_LINKED_RX_MESSAGES		0//1
 
 /* The IP stack executes it its own task (although any application task can make
 use of its services through the published sockets API). ipconfigIP_TASK_PRIORITY
@@ -113,7 +113,7 @@ task.  This setting is less important when the FreeRTOS Win32 simulator is used
 as the Win32 simulator only stores a fixed amount of information on the task
 stack.  FreeRTOS includes optional stack overflow detection, see:
 http://www.freertos.org/Stacks-and-stack-overflow-checking.html */
-#define ipconfigIP_TASK_STACK_SIZE_WORDS	( configMINIMAL_STACK_SIZE * 5U )
+#define ipconfigIP_TASK_STACK_SIZE_WORDS	( configMINIMAL_STACK_SIZE * 8U )
 
 /* ipconfigRAND32() is called by the IP stack to generate random numbers for
 things such as a DHCP transaction number or initial sequence number.  Random
@@ -154,7 +154,7 @@ stack will revert to using the static IP address even when ipconfigUSE_DHCP is
 set to 1 if a valid configuration cannot be obtained from a DHCP server for any
 reason.  The static configuration used is that passed into the stack by the
 FreeRTOS_IPInit() function call. */
-#define ipconfigUSE_DHCP				0
+#define ipconfigUSE_DHCP				1
 #define ipconfigDHCP_REGISTER_HOSTNAME	1
 #define ipconfigDHCP_USES_UNICAST       1
 
@@ -242,7 +242,7 @@ socketAUTO_PORT_ALLOCATION_START_NUMBER to 0xffff.  If
 ipconfigALLOW_SOCKET_SEND_WITHOUT_BIND is set to 0 then calling FreeRTOS_sendto()
 on a socket that has not yet been bound will result in the send operation being
 aborted. */
-#define ipconfigALLOW_SOCKET_SEND_WITHOUT_BIND 1
+#define ipconfigALLOW_SOCKET_SEND_WITHOUT_BIND 0
 
 /* Defines the Time To Live (TTL) values used in outgoing UDP packets. */
 #define ipconfigUDP_TIME_TO_LIVE		128
@@ -499,7 +499,7 @@ the performance of other TCP/IP stack activity. */
 /* Forbid that our packets will get fragmented. */
 #define ipconfigFORCE_IP_DONT_FRAGMENT    0
 
-#define ipconfigUSE_SetSocketID           0
+#define ipconfigUSE_SetSocketID           1
 
 /*
 #define iptraceNETWORK_BUFFER_OBTAINED( pxReturn ) \

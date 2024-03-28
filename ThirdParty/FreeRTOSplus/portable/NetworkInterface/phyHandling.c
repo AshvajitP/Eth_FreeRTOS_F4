@@ -153,7 +153,7 @@ static BaseType_t xHas_1F_PHYSPCS( uint32_t ulPhyID )
             /* Most PHY's have a 1F_PHYSPCS */
             xResult = pdTRUE;
             break;
-
+        case PHY_ID_DP83825I:
         case PHY_ID_DP83848I:
         case PHY_ID_DP83TC811S:
         case PHY_ID_TM4C129X:
@@ -174,6 +174,7 @@ static BaseType_t xHas_19_PHYCR( uint32_t ulPhyID )
     {
         case PHY_ID_LAN8742A:
         case PHY_ID_DP83848I:
+        case PHY_ID_DP83825I:
         case PHY_ID_TM4C129X:
             xResult = pdTRUE;
             break;

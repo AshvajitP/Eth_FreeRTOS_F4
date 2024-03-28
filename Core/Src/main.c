@@ -28,6 +28,16 @@
 #include "task.h"
 #include "FreeRTOS_sockets.h"
 #include "FreeRTOS_IP.h"
+
+#include "tcp_sockets_wrapper.h"
+#include "sockets_wrapper.h"
+//#include "transport_plaintext.h"
+#include "transport_mbedtls.h"
+#include "core_http_config.h"
+#include "core_http_client.h"
+
+#include "Http_Open.h"
+#include "hardware_rng.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -50,9 +60,11 @@ RNG_HandleTypeDef hrng;
 
 TIM_HandleTypeDef htim9;
 
-/* USER CODE BEGIN PV */
-TaskHandle_t LedTask_t,SecondaryTask_t;
 
+/* USER CODE BEGIN PV */
+TaskHandle_t LedTask_t,SecondaryTask_t,RandomNumberTask_t;
+HeapStats_t Heap_status_t ;
+BaseType_t Stack_Size = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -64,8 +76,7 @@ static void MX_RNG_Init(void);
 
 void Led_task(void* arg);
 void SecTask(void* arg);
-extern NetworkInterface_t * px_FillInterfaceDescriptor( BaseType_t xEMACIndex,
-                                                    NetworkInterface_t * pxInterface );
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -74,7 +85,7 @@ extern NetworkInterface_t * px_FillInterfaceDescriptor( BaseType_t xEMACIndex,
 normally be read from an EEPROM and not hard coded (in real deployed
 applications).*/
 static uint8_t ucMACAddress[ 6 ] = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55 };
-
+uint8_t send_req = pdFALSE;
 /* Define the network addressing.  These parameters will be used if either
 ipconfigUDE_DHCP is 0 or if ipconfigUSE_DHCP is 1 but DHCP auto configuration
 failed. */
@@ -123,22 +134,15 @@ int main(void)
   // Disable WDT. Needs more work!
   HAL_GPIO_WritePin(WDT_EN_GPIO_Port, WDT_EN_Pin, GPIO_PIN_RESET);
 //  HAL_GPIO_WritePin(WDT_IP_GPIO_Port, WDT_IP_Pin, GPIO_PIN_SET);
-  BaseType_t xRet;
-BaseType_t xEndPointCount = 0;
-static NetworkInterface_t xInterfaces[1];
-static NetworkEndPoint_t xEndPoints[4];
 
  // Set sounder to 0 volume level
  // HAL_GPIO_WritePin(SOUNDER_SEL1_GPIO_Port, SOUNDER_SEL1_Pin, GPIO_PIN_RESET);
  // HAL_GPIO_WritePin(SOUNDER_SEL2_GPIO_Port, SOUNDER_SEL2_Pin, GPIO_PIN_RESET);
-  xTaskCreate(Led_task,"LED toggle",256,NULL,3,&LedTask_t);
+  xTaskCreate(Led_task,"LED toggle",128,NULL,3,&LedTask_t);
+  xTaskCreate(RandomNumberGeneratorTask,"RandomNum",128,NULL,4,&RandomNumberTask_t);
   /* Initialise the TCP/IP stack. */
-  FreeRTOS_IPInit( ucIPAddress,
-                     ucNetMask,
-                     ucGatewayAddress,
-                     ucDNSServerAddress,
-                     ucMACAddress );
- xTaskCreate(SecTask,"Second Task",256,NULL,3,&SecondaryTask_t);
+  FreeRTOS_IPInit( ucIPAddress,ucNetMask,ucGatewayAddress,ucDNSServerAddress,ucMACAddress );
+ xTaskCreate(SecTask,"Second Task",256*4,NULL,3,&SecondaryTask_t);
 
 vTaskStartScheduler();  
   /* USER CODE END 2 */
@@ -396,6 +400,28 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void vApplicationGetIdleTaskMemory( StaticTask_t ** ppxIdleTaskTCBBuffer,
+									StackType_t ** ppxIdleTaskStackBuffer,
+									uint32_t * pulIdleTaskStackSize )
+{
+/* If the buffers to be provided to the Idle task are declared inside this
+ * function then they must be declared static - otherwise they will be allocated on
+ * the stack and so not exists after this function exits. */
+	static StaticTask_t xIdleTaskTCB;
+	static StackType_t uxIdleTaskStack[ configMINIMAL_STACK_SIZE ];
+
+	/* Pass out a pointer to the StaticTask_t structure in which the Idle task's
+	 * state will be stored. */
+	*ppxIdleTaskTCBBuffer = &xIdleTaskTCB;
+
+	/* Pass out the array that will be used as the Idle task's stack. */
+	*ppxIdleTaskStackBuffer = uxIdleTaskStack;
+
+	/* Pass out the size of the array pointed to by *ppxIdleTaskStackBuffer.
+	 * Note that, as the array is necessarily of type StackType_t,
+	 * configMINIMAL_STACK_SIZE is specified in words, not bytes. */
+	*pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
+}
  void vApplicationIPNetworkEventHook( eIPCallbackEvent_t eNetworkEvent )
 {
     uint32_t ulIPAddress, ulNetMask, ulGatewayAddress, ulDNSServerAddress;
@@ -454,28 +480,10 @@ static void MX_GPIO_Init(void)
         //FreeRTOS_printf( ( "Gateway Address: %s\r\n", cBuffer ) );
 
         FreeRTOS_inet_ntoa( ulDNSServerAddress, cBuffer );
+        send_req = pdTRUE;
        // FreeRTOS_printf( ( "DNS Server Address: %s\r\n\r\n\r\n", cBuffer ) );
     }
 }
-
-   BaseType_t xApplicationGetRandomNumber( uint32_t *pulValue )
-    {
-    HAL_StatusTypeDef xResult;
-    BaseType_t xReturn;
-    uint32_t ulValue;
-
-    	xResult = HAL_RNG_GenerateRandomNumber( &hrng, &ulValue );
-    	if( xResult == HAL_OK )
-    	{
-    		xReturn = pdPASS;
-    		*pulValue = ulValue;
-    	}
-    	else
-    	{
-    		xReturn = pdFAIL;
-    	}
-    	return xReturn;
-    }
 
     uint32_t ulApplicationGetNextSequenceNumber(
         uint32_t ulSourceAddress,
@@ -491,10 +499,13 @@ static void MX_GPIO_Init(void)
 
 void Led_task(void* arg)
 {
+   
   while(1)
   {
     HAL_GPIO_TogglePin(GPIOE,LED_GAS_RED_Pin);
-    vTaskDelay(800);
+    vPortGetHeapStats(&Heap_status_t);
+    Stack_Size = uxTaskGetStackHighWaterMark(SecondaryTask_t);
+    vTaskDelay(2000);
   }
 }
 
@@ -503,9 +514,25 @@ void SecTask(void* arg)
  while(1)
   {
     HAL_GPIO_TogglePin(GPIOE,LED_FAULT_RED_Pin);
-    vTaskDelay(1200);
+    if(send_req == pdTRUE)
+    {
+       if( FreeRTOS_IsNetworkUp() == pdFALSE )
+        {
+           /* LogInfo( ( "Waiting for the network link up event..." ) );*/
+
+            while( FreeRTOS_IsNetworkUp() == pdFALSE )
+            {
+                vTaskDelay( pdMS_TO_TICKS( 1000U ) );
+            }
+        }
+    http_get();
+    }
+    vTaskDelay(15000);
   }
-} 
+}
+
+
+
 /* USER CODE END 4 */
 
 /**
