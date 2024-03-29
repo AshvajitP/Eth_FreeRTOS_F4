@@ -523,7 +523,6 @@ static TlsTransportStatus_t tlsSetup( NetworkContext_t * pNetworkContext,
 
     pTlsTransportParams = pNetworkContext->pParams;
     /* Initialize the mbed TLS context structures. */
-          mbedtls_platform_set_calloc_free(pvPortCalloc,vPortFree);
     sslContextInit( &( pTlsTransportParams->sslContext ) );
 
     mbedtlsError = mbedtls_ssl_config_defaults( &( pTlsTransportParams->sslContext.config ),
@@ -732,7 +731,8 @@ TlsTransportStatus_t TLS_FreeRTOS_Connect( NetworkContext_t * pNetworkContext,
     {
         /* Empty else for MISRA 15.7 compliance. */
     }
-
+    
+       mbedtls_platform_set_calloc_free(pvPortCalloc,vPortFree);
     /* Establish a TCP connection with the server. */
     if( returnStatus == TLS_TRANSPORT_SUCCESS )
     {

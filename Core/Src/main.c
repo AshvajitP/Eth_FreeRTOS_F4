@@ -139,7 +139,7 @@ int main(void)
  // HAL_GPIO_WritePin(SOUNDER_SEL1_GPIO_Port, SOUNDER_SEL1_Pin, GPIO_PIN_RESET);
  // HAL_GPIO_WritePin(SOUNDER_SEL2_GPIO_Port, SOUNDER_SEL2_Pin, GPIO_PIN_RESET);
   xTaskCreate(Led_task,"LED toggle",128,NULL,3,&LedTask_t);
-  xTaskCreate(RandomNumberGeneratorTask,"RandomNum",128,NULL,4,&RandomNumberTask_t);
+  //xTaskCreate(RandomNumberGeneratorTask,"RandomNum",128,NULL,4,&RandomNumberTask_t);
   /* Initialise the TCP/IP stack. */
   FreeRTOS_IPInit( ucIPAddress,ucNetMask,ucGatewayAddress,ucDNSServerAddress,ucMACAddress );
  xTaskCreate(SecTask,"Second Task",256*4,NULL,3,&SecondaryTask_t);

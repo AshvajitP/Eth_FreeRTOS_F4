@@ -37,7 +37,7 @@
 
 extern RNG_HandleTypeDef hrng;
 
-uint32_t randomValue_arr[32];
+/*uint32_t randomValue_arr[32];
 QueueHandle_t RandomNumGen_Q;
 
 void SaveRandomValue(uint32_t val);
@@ -85,10 +85,10 @@ void RandomNumberGeneratorTask(void * arg)
     	{
     		xReturn = pdPASS;
     		*pulValue = ulValue;
-               /* if(random_Val_index >=32)
-                {
-                  random_Val_index = 0;
-                }*/
+               // if(random_Val_index >=32)
+                //{
+                //  random_Val_index = 0;
+                //}
                 //GetRandomValue(ulValue,random_Val_index);
                // random_Val_index++;
     	}
@@ -107,7 +107,7 @@ void RandomNumberGeneratorTask(void * arg)
  }
 
 
-/*-------Save Backp val ---*/
+//-------Save Backp val ---
 uint32_t UseRandomBackupValue(void)
 {
   static uint8_t random_Val_index;
@@ -177,6 +177,50 @@ int mbedtls_hardware_poll( void *Data, unsigned char *Output, size_t Len, size_t
 
   return 0;
 }
+*/
+BaseType_t xApplicationGetRandomNumber( uint32_t *pulValue )
+ {
+    HAL_StatusTypeDef xResult;
+    BaseType_t xReturn;
+    uint32_t ulValue;
+    	xResult = HAL_RNG_GenerateRandomNumber( &hrng, &ulValue );
+    	if( xResult == HAL_OK )
+    	{
+    		xReturn = pdPASS;
+    		*pulValue = ulValue;
+    	}
+    	else
+    	{
+    		xReturn = pdFAIL;
+    	}
 
+    	return xReturn;
+ }
+
+int mbedtls_hardware_poll( void *Data, unsigned char *Output, size_t Len, size_t *oLen )
+{
+  uint8_t index;
+  uint32_t randomValue;
+  HAL_StatusTypeDef xResult;
+  Data = NULL;
+  for (index = 0; index < Len/4;index++)
+  {
+      xResult = HAL_RNG_GenerateRandomNumber( &hrng, &randomValue );    
+      if (xResult == HAL_OK)
+      {
+         *oLen += 4;
+         memcpy(&(Output[index * 4]), &randomValue, 4);
+      }
+      else 
+      {
+       FreeHeapSize_t = xPortGetFreeHeapSize();
+       randomValue = FreeHeapSize_t ^ xTaskGetTickCount();
+       *oLen += 4;
+       memcpy(&(Output[index * 4]), &randomValue, 4);
+      }
+
+  }
+  return 0;
+}
 #endif /*MBEDTLS_ENTROPY_HARDWARE_ALT*/
 

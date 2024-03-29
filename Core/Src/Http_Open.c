@@ -153,7 +153,7 @@ xNetworkCredentials.pPrivateKey = ( const unsigned char * ) Client_key;
 xNetworkCredentials.privateKeySize = strlen( Client_key );
    while( pdPASS != connectToServer(&networkContext,HOST_NAME, HTTPS_PORT, &xNetworkCredentials) )
             {
-                vTaskDelay( pdMS_TO_TICKS( 15000U ) );
+                vTaskDelay( pdMS_TO_TICKS( 5000U ) );
             }
   transportInterface.pNetworkContext = &networkContext;
  transportInterface.recv = TLS_FreeRTOS_recv;
