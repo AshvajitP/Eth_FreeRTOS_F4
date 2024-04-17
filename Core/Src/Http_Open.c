@@ -14,7 +14,7 @@
 #define TRANSPORT_SEND_RECV_TIMEOUT_MS 3500
 #define USER_BUFFER_LENGTH 1024
 #define HTTP_NOT_SECURE 0
-#define HOST_NAME "google.de"
+#define HOST_NAME "httpbin.org"
 #define HOST_URI "/get"
 #define HTTPS_PORT 443
 #define IOT_CORE_ALPN_PROTOCOL_NAME    "x-amzn-http-ca"
